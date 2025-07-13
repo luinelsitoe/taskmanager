@@ -49,13 +49,24 @@ public class Task {
     this.title = title;
     this.description = description;
     this.createdAt = LocalDateTime.now();
-    this.status = Status.PENDING;
+    this.status = Status.PENDENTE;
   }
 
   public void setTitle(String title) {
     if (title == null || title.isBlank()) {
       throw new IllegalArgumentException("Titulo não pode estar vazio");
     }
+
+    if (status == Status.FEITA) {
+      throw new IllegalStateException("Esta tarefa ja foi concluida.");
+    }
     this.title = title;
+  }
+
+  public void setDescription(String description) {
+    if (status == Status.FEITA) {
+      throw new IllegalStateException("Esta tarefa ja foi concluida.");
+    }
+    this.description = description;
   }
 }
