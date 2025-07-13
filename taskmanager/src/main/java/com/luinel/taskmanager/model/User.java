@@ -1,6 +1,5 @@
 package com.luinel.taskmanager.model;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -32,13 +31,27 @@ public class User {
 
   public User(String name, String password) {
     if (password == null || password.isBlank()) {
-      throw new InvalidParameterException("Password não pode estar vazia");
+      throw new IllegalArgumentException("Password não pode estar vazia");
     }
 
     if (name == null || name.isBlank()) {
-      throw new InvalidParameterException("Nome não pode estar vazio");
+      throw new IllegalArgumentException("Nome não pode estar vazio");
     }
     this.name = name;
+    this.password = password;
+  }
+
+  public void setName(String name) {
+    if (name == null || name.isBlank()) {
+      throw new IllegalArgumentException("Nome não pode estar vazio");
+    }
+    this.name = name;
+  }
+
+  public void setPassword(String password) {
+    if (password == null || password.isBlank()) {
+      throw new IllegalArgumentException("Password não pode estar vazia");
+    }
     this.password = password;
   }
 }

@@ -50,4 +50,10 @@ public class Task {
     this.status = Status.PENDING;
   }
 
+  public void setTitle(String title) {
+    if (title == null || title.isBlank()) {
+      throw new InvalidParameterException("Titulo não pode estar vazio");
+    }
+    this.title = title;
+  }
 }
