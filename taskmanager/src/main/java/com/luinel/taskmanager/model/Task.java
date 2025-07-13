@@ -1,6 +1,5 @@
 package com.luinel.taskmanager.model;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -13,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Table(name = "tb_tasks")
 @Entity
@@ -28,20 +28,21 @@ public class Task {
   private String description;
 
   @Column(nullable = false)
-  private LocalDateTime created_at;
+  private LocalDateTime createdAt;
 
   @Column(nullable = false)
-  private LocalDateTime fineshed_at;
+  private LocalDateTime fineshedAt;
 
   @Enumerated(EnumType.STRING)
   private Status status;
 
   @ManyToOne
+  @ToString.Exclude
   private User user;
 
   public Task(String title, String description) {
     if (title == null || title.isBlank()) {
-      throw new InvalidParameterException("Titulo não pode estar vazio");
+      throw new IllegalArgumentException("Titulo não pode estar vazio");
     }
 
     this.title = title;
@@ -52,7 +53,7 @@ public class Task {
 
   public void setTitle(String title) {
     if (title == null || title.isBlank()) {
-      throw new InvalidParameterException("Titulo não pode estar vazio");
+      throw new IllegalArgumentException("Titulo não pode estar vazio");
     }
     this.title = title;
   }
