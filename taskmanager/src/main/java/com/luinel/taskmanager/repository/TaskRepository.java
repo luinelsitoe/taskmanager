@@ -13,9 +13,9 @@ import com.luinel.taskmanager.model.Task;
 public interface TaskRepository extends JpaRepository<Task, Long> {
   List<Task> findByUserIdAndTitleContaining(Long userId, String title);
 
-  List<Task> findByUserIdAndStatus(Long userId, Status status);
+  List<Task> findByUserIdAndStatus(Long userID, Status status);
 
-  List<Task> findByUserIdAndCreatedAtBetween(Long userId, LocalDateTime start, LocalDateTime end);
+  List<Task> findByUserIdAndCreatedAtBetween(Long userID, LocalDateTime start, LocalDateTime end);
 
-  List<Task> findByUserId(Long userId);
+  List<Task> findByUserId(Long userID);
 }
