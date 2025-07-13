@@ -2,6 +2,7 @@ package com.luinel.taskmanager.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,7 +37,7 @@ public class Task {
   @Enumerated(EnumType.STRING)
   private Status status;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @ToString.Exclude
   private User user;
 
@@ -47,7 +48,7 @@ public class Task {
 
     this.title = title;
     this.description = description;
-    this.created_at = LocalDateTime.now();
+    this.createdAt = LocalDateTime.now();
     this.status = Status.PENDING;
   }
 
