@@ -30,11 +30,6 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
-<!-- https://mvnrepository.com/artifact/at.favre.lib/bcrypt -->
-		<dependency>
-				<groupId>at.favre.lib</groupId>
-				<artifactId>bcrypt</artifactId>
-				<version>0.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

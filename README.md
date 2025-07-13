@@ -20,7 +20,6 @@ As páginas são renderizadas diretamente no servidor usando Thymeleaf, sem fron
 - Spring Data JPA
 - MySQL
 - Bean Validation
-- BCrypt
 
 ## Estrutura futura planejada
 - Adicionar autenticação com Spring Security
