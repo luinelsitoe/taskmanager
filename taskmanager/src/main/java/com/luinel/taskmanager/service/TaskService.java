@@ -39,17 +39,45 @@ public class TaskService {
     return "Tarefa salva";
   }
 
-  public String updateTask(Long userID, Long taskID, TaskForm taskForm) {
-    var user = getUser(userID);
-    var task = getTaskById(taskID);
-    task.setTitle(taskForm.getTitle());
-    task.setDescription(taskForm.getDescription());
-
-    task.setUser(user);
-    user.getTasks().add(task);
+  public String undoTask(Long taskID, Long userID) {
+    var task = getTaskById(taskID, userID);
+    task.setStatus(Status.PENDENTE);
     taskRepo.save(task);
 
-    return "Tarefa actualizada";
+    return "Tarefa desfeita";
+  }
+
+  public String cancelTask(Long taskID, Long userID) {
+    var task = getTaskById(taskID, userID);
+    task.setStatus(Status.CANCELADA);
+    taskRepo.save(task);
+
+    return "Tarefa cancelada";
+  }
+
+  public String finishTask(Long userID, Long taskID) {
+    var task = getTaskById(taskID, userID);
+    task.setFineshedAt(LocalDateTime.now());
+    task.setStatus(Status.FEITA);
+    taskRepo.save(task);
+
+    return "Tarefa finalizada";
+  }
+
+  public String updateTitle(Long taskID, Long userID, String title) {
+    var task = getTaskById(taskID, userID);
+    task.setTitle(title);
+    taskRepo.save(task);
+
+    return "Titulo actualizada";
+  }
+
+  public String updateDescription(Long taskID, Long userID, String description) {
+    var task = getTaskById(taskID, userID);
+    task.setDescription(description);
+    taskRepo.save(task);
+
+    return "Descricao actualizada";
   }
 
   public String removeTask(Long id) {
@@ -57,8 +85,8 @@ public class TaskService {
     return "Tarefa removida";
   }
 
-  public Task getTaskById(Long id) {
-    return taskRepo.findById(id)
+  public Task getTaskById(Long taskID, Long userID) {
+    return taskRepo.findByIdAndUserId(taskID, userID)
         .orElseThrow(() -> new EntityNotFoundException("Tarefa não encontrada"));
   }
 
