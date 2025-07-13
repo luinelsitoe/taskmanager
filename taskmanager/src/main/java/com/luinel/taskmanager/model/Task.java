@@ -33,7 +33,6 @@ public class Task {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
-  @Column(nullable = false)
   private LocalDateTime fineshedAt;
 
   @Enumerated(EnumType.STRING)

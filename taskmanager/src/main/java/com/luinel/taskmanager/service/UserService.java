@@ -1,7 +1,5 @@
 package com.luinel.taskmanager.service;
 
-import java.security.InvalidParameterException;
-
 import org.springframework.stereotype.Service;
 
 import com.luinel.taskmanager.model.User;
@@ -33,6 +31,7 @@ public class UserService {
   public String updateName(Long id, String name) {
     var user = getUser(id);
     user.setName(name);
+    userRepo.save(user);
 
     return "Nome actualizado";
   }
@@ -40,6 +39,7 @@ public class UserService {
   public String updatePassword(Long id, String password) {
     var user = getUser(id);
     user.setPassword(password);
+    userRepo.save(user);
 
     return "Palavra-passe actualizada";
   }
@@ -49,8 +49,8 @@ public class UserService {
     var user = userRepo.findByName(name)
         .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
 
-    if (user.getPassword().equals(password)) {
-      throw new InvalidParameterException("Palavra-passe incorreta");
+    if (!user.getPassword().equals(password)) {
+      throw new IllegalArgumentException("Palavra-passe incorreta");
     }
 
     return user;

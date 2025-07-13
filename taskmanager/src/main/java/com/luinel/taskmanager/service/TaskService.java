@@ -39,7 +39,7 @@ public class TaskService {
     return "Tarefa salva";
   }
 
-  public String undoTask(Long taskID, Long userID) {
+  public String undoStatus(Long taskID, Long userID) {
     var task = getTaskById(taskID, userID);
     task.setStatus(Status.PENDENTE);
     taskRepo.save(task);
@@ -55,7 +55,7 @@ public class TaskService {
     return "Tarefa cancelada";
   }
 
-  public String finishTask(Long userID, Long taskID) {
+  public String finishTask(Long taskID, Long userID) {
     var task = getTaskById(taskID, userID);
     task.setFineshedAt(LocalDateTime.now());
     task.setStatus(Status.FEITA);
