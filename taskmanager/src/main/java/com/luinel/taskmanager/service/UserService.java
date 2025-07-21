@@ -16,20 +16,20 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
   private final UserRepository userRepo;
 
-  private User getUser(Long id) {
+  public User findById(Long id) {
     return userRepo.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
   }
 
-  public String createUser(UserForm userForm) {
+  public User createUser(UserForm userForm) {
     var user = new User(userForm.getName(), userForm.getPassword());
     userRepo.save(user);
 
-    return "Usuario criado";
+    return user;
   }
 
   public String updateName(Long id, String name) {
-    var user = getUser(id);
+    var user = findById(id);
     user.setName(name);
     userRepo.save(user);
 
@@ -37,7 +37,7 @@ public class UserService {
   }
 
   public String updatePassword(Long id, String password) {
-    var user = getUser(id);
+    var user = findById(id);
     user.setPassword(password);
     userRepo.save(user);
 
