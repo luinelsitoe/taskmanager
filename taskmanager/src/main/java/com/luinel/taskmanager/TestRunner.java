@@ -28,7 +28,7 @@ public class TestRunner implements CommandLineRunner {
     // testTaskService();
   }
 
-  private void testTaskService() {
+  public void testTaskService() {
     System.out.println("######## TESTANDO TASKSERVICE #######");
 
     System.out.println();
@@ -90,7 +90,7 @@ public class TestRunner implements CommandLineRunner {
     System.out.println(tasks4);
   }
 
-  private void testUserService() {
+  public void testUserService() {
     System.out.println("######## TESTANDO USERSERVICE #######");
 
     System.out.println();
