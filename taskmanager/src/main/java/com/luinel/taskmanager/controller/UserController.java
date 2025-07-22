@@ -4,20 +4,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.luinel.taskmanager.error.DuplicateUserException;
 import com.luinel.taskmanager.model.form.UserForm;
+import com.luinel.taskmanager.service.TaskService;
 import com.luinel.taskmanager.service.UserService;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
+  private final TaskService taskService;
 
   @GetMapping("/login")
   public String loginForm(Model model) {
@@ -27,21 +28,13 @@ public class UserController {
   }
 
   @PostMapping("/login/save")
-  public String login(Model model, @ModelAttribute UserForm userForm) {
-    try {
-      var user = userService.login(userForm.getName(), userForm.getPassword());
-      return "redirect:/dashboard/" + user.getId();
-
-    } catch (EntityNotFoundException ex) {
-      model.addAttribute("errorMessage", ex.getMessage());
-      model.addAttribute("userForm", userForm);
-      return "login-form";
-
-    } catch (IllegalArgumentException ex) {
-      model.addAttribute("errorMessage", ex.getMessage());
-      model.addAttribute("userForm", userForm);
-      return "login-form";
-    }
+  public String login(
+      Model model,
+      @ModelAttribute UserForm userForm, // sem necessidade de validar o formulario
+      HttpSession session) {
+    var user = userService.login(userForm.getName(), userForm.getPassword());
+    session.setAttribute("userId", user.getId());
+    return "redirect:/dashboard";
   }
 
   @GetMapping("/register")
@@ -52,22 +45,27 @@ public class UserController {
   }
 
   @PostMapping("/register/save")
-  public String saveUser(Model model, @ModelAttribute UserForm userForm) {
-    try {
-      var user = userService.createUser(userForm);
-      return "redirect:/dashboard/" + user.getId();
-
-    } catch (DuplicateUserException e) {
-      model.addAttribute("errorMessage", e.getMessage());
-      model.addAttribute("userForm", userForm);
-      return "register-form";
-    }
+  public String saveUser(
+      Model model,
+      @Valid @ModelAttribute UserForm userForm,
+      HttpSession session) {
+    var user = userService.createUser(userForm);
+    session.setAttribute("userId", user.getId());
+    return "redirect:/dashboard";
   }
 
-  @GetMapping("/dashboard/{id}")
-  public String dashboard(@PathVariable Long id, Model model) {
-    var user = userService.findById(id);
+  @GetMapping("/dashboard")
+  public String dashboard(Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var user = userService.findById(userId);
+    var tasks = taskService.getAllTasks(userId);
     model.addAttribute("user", user);
+    model.addAttribute("tasks", tasks);
     return "dashboard";
   }
 }

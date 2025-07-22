@@ -8,7 +8,11 @@
   <body>
     <div>
       <h1>Dashboard</h1>
-      <p th:text="${user.name}"></p>
+      <p th:text="${user}"></p>
+      <h2>Tasks</h2>
+      <div
+        th:replace="~{fragments/tasks-fragment :: tasks-fragment(${tasks})}"
+      ></div>
     </div>
   </body>
 </html>

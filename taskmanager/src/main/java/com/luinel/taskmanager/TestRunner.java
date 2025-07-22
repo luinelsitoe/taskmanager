@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.luinel.taskmanager.model.Status;
 import com.luinel.taskmanager.model.form.TaskForm;
 import com.luinel.taskmanager.model.form.UserForm;
-import com.luinel.taskmanager.service.TaskService;
+import com.luinel.taskmanager.service.TaskServiceI;
 import com.luinel.taskmanager.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Profile("dev")
 public class TestRunner implements CommandLineRunner {
 
-  private final TaskService taskService;
+  private final TaskServiceI taskService;
   private final UserService userService;
 
   @Override

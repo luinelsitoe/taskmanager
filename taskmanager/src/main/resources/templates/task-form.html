@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Task</title>
+  </head>
+  <body>
+    <div>
+      <h1>Create Task</h1>
+      <div th:if="${errorMessages}" style="color: red">
+        <ul th:each="msg : ${errorMessages}">
+          <li>
+            <p th:text="${msg}"></p>
+          </li>
+        </ul>
+      </div>
+      <form
+        th:action="@{/tasks/form/save}"
+        th:object="${taskForm}"
+        method="post"
+      >
+        <label for="title">Titulo: </label>
+        <input type="text" id="title" th:field="*{title}" />
+        <br />
+
+        <label for="description">Descricao: </label>
+        <textarea id="description" th:field="*{description}"></textarea>
+        <br />
+
+        <button type="submit">Criar</button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -9,8 +9,12 @@
     <div align="center">
       <h1>Login</h1>
 
-      <div th:if="${errorMessage}" style="color: red">
-        <p th:text="${errorMessage}"></p>
+      <div th:if="${errorMessages}" style="color: red">
+        <ul th:each="msg : ${errorMessages}">
+          <li>
+            <p th:text="${msg}"></p>
+          </li>
+        </ul>
       </div>
 
       <form th:action="@{/login/save}" th:object="${userForm}" method="post">
