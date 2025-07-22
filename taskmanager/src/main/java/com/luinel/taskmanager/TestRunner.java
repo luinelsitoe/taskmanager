@@ -24,8 +24,8 @@ public class TestRunner implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    testUserService();
-    testTaskService();
+    // testUserService();
+    // testTaskService();
   }
 
   private void testTaskService() {
