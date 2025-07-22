@@ -2,6 +2,7 @@ package com.luinel.taskmanager.service;
 
 import org.springframework.stereotype.Service;
 
+import com.luinel.taskmanager.error.DuplicateUserException;
 import com.luinel.taskmanager.model.User;
 import com.luinel.taskmanager.model.form.UserForm;
 import com.luinel.taskmanager.repository.UserRepository;
@@ -22,6 +23,10 @@ public class UserService {
   }
 
   public User createUser(UserForm userForm) {
+    if (userRepo.existsByName(userForm.getName())) {
+      throw new DuplicateUserException(
+          String.format("Usuario com nome %s já existe", userForm.getName()));
+    }
     var user = new User(userForm.getName(), userForm.getPassword());
     userRepo.save(user);
 
