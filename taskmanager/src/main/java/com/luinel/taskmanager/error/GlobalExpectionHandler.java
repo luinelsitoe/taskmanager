@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class GlobalExpectionHandler {
+
   @ExceptionHandler(IllegalArgumentException.class)
   public String handleIllegalArgument(IllegalArgumentException ex, RedirectAttributes redirectAttributes,
       HttpServletRequest request) {

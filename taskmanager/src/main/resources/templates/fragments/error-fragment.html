@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error</title>
+  </head>
+  <body>
+    <div th:fragment="error-fragment(${errorMessages})">
+      <div th:if="${errorMessages}" style="color: red">
+        <ul th:each="msg : ${errorMessages}">
+          <li>
+            <p th:text="${msg}"></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

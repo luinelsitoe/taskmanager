@@ -33,7 +33,7 @@ public class Task {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
-  private LocalDateTime fineshedAt;
+  private LocalDateTime finishedAt;
 
   @Enumerated(EnumType.STRING)
   private Status status;

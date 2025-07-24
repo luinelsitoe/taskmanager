@@ -1,6 +1,7 @@
 package com.luinel.taskmanager.controller;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,38 +26,15 @@ import lombok.RequiredArgsConstructor;
 public class TaskController {
   private final TaskService taskService;
 
-  @GetMapping("/{userId}/{taskId}")
-  public String getTaskById(@PathVariable("userId") Long userID, @PathVariable("taskId") Long taskID, Model model) {
-    var task = taskService.getTaskById(taskID, userID);
-    model.addAttribute("task", task);
-    return "fragments/task-fragment";
-  }
+  @GetMapping
+  public String getAllTasks(Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
 
-  @GetMapping("/{userId}")
-  public String getAllTasks(@PathVariable Long userId, Model model) {
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
     var tasks = taskService.getAllTasks(userId);
-    model.addAttribute("tasks", tasks);
-    return "fragments/tasks/";
-  }
-
-  @GetMapping("/status/{userId}/")
-  public String getAllTasksByStatus(@PathVariable Long userId, @RequestParam Status status, Model model) {
-    var tasks = taskService.getAllTasksByStatus(userId, status);
-    model.addAttribute("tasks", tasks);
-    return "fragments/tasks/";
-  }
-
-  @GetMapping("/date/{userId}")
-  public String getAllTasksBetween(@PathVariable Long userId, @RequestParam LocalDateTime start,
-      @RequestParam LocalDateTime end, Model model) {
-    var tasks = taskService.getAllTasksBetween(userId, start, end);
-    model.addAttribute("tasks", tasks);
-    return "fragments/tasks/";
-  }
-
-  @GetMapping("/title/{userId}")
-  public String getTaskByTitle(@PathVariable Long userId, @RequestParam String title, Model model) {
-    var tasks = taskService.getTaskByTitle(userId, title);
     model.addAttribute("tasks", tasks);
     return "fragments/tasks/";
   }
@@ -69,7 +47,7 @@ public class TaskController {
   }
 
   @PostMapping("/form/save")
-  public String createTask(Model model, @Valid @ModelAttribute TaskForm taskForm, HttpSession session) {
+  public String createTask(@Valid @ModelAttribute TaskForm taskForm, HttpSession session) {
     var userId = (Long) session.getAttribute("userId");
 
     if (userId == null) {
@@ -80,16 +58,151 @@ public class TaskController {
     return "redirect:/dashboard";
   }
 
-  // String undoStatus(Long taskID, Long userID);
+  @GetMapping("/update-form/{taskId}")
+  public String updateForm(@PathVariable("taskId") Long taskId,
+      HttpSession session, Model model) {
+    var userId = (Long) session.getAttribute("userId");
 
-  // String cancelTask(Long taskID, Long userID);
+    if (userId == null) {
+      return "redirect:/login";
+    }
 
-  // String finishTask(Long taskID, Long userID);
+    var statusList = Arrays.asList(Status.values());
+    var task = taskService.getTaskById(taskId, userId);
 
-  // String updateTitle(Long taskID, Long userID, String title);
+    var taskForm = new TaskForm(
+        task.getTitle(),
+        task.getDescription(),
+        task.getCreatedAt(),
+        task.getFinishedAt(),
+        task.getStatus());
+    model.addAttribute("taskId", task.getId());
+    model.addAttribute("taskForm", taskForm);
+    model.addAttribute("statusList", statusList);
+    return "task-update-form";
+  }
 
-  // String updateDescription(Long taskID, Long userID, String description);
+  @PostMapping("/update-form/save/{taskId}")
+  public String updateTask(@PathVariable("taskId") Long taskId,
+      @ModelAttribute TaskForm taskForm, Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
 
-  // String removeTask(Long id);
+    if (userId == null) {
+      return "redirect:/login";
+    }
 
+    var msg = taskService.updateTask(taskId, userId, taskForm);
+    model.addAttribute("message", msg);
+    return "redirect:/dashboard";
+  }
+
+  @GetMapping("/{taskId}")
+  public String getTaskById(@PathVariable("taskId") Long taskId, Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var task = taskService.getTaskById(taskId, userId);
+    model.addAttribute("task", task);
+    return "task-card";
+  }
+
+  @GetMapping("/status/")
+  public String getAllTasksByStatus(@RequestParam Status status,
+      Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var tasks = taskService.getAllTasksByStatus(userId, status);
+    model.addAttribute("tasks", tasks);
+    return "fragments/tasks/";
+  }
+
+  @GetMapping("/date")
+  public String getAllTasksBetween(@RequestParam LocalDateTime start,
+      @RequestParam LocalDateTime end, Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var tasks = taskService.getAllTasksBetween(userId, start, end);
+    model.addAttribute("tasks", tasks);
+    return "fragments/tasks/";
+  }
+
+  @GetMapping("/title")
+  public String getTaskByTitle(@RequestParam String title,
+      Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var tasks = taskService.getTaskByTitle(userId, title);
+    model.addAttribute("tasks", tasks);
+    return "fragments/tasks/";
+  }
+
+  @GetMapping("/undo/{taskId}")
+  public String undoStatus(@PathVariable("taskId") Long taskId,
+      Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var msg = taskService.undoStatus(taskId, userId);
+    model.addAttribute("message", msg);
+    return "redirect:/dashboard";
+  }
+
+  @GetMapping("/cancel/{taskId}")
+  public String cancelStatus(@PathVariable("taskId") Long taskId,
+      Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var msg = taskService.cancelTask(taskId, userId);
+    model.addAttribute("message", msg);
+    return "redirect:/dashboard";
+  }
+
+  @GetMapping("/finish/{taskId}")
+  public String finishTask(@PathVariable("taskId") Long taskId,
+      Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var msg = taskService.finishTask(taskId, userId);
+    model.addAttribute("message", msg);
+    return "redirect:/dashboard";
+  }
+
+  @GetMapping("/delete/{taskId}")
+  public String removeTask(@PathVariable("taskId") Long taskId, HttpSession session, Model model) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var msg = taskService.removeTask(taskId, userId);
+    model.addAttribute("message", msg);
+    return "redirect:/dashboard";
+  }
 }

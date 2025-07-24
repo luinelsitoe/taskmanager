@@ -6,10 +6,13 @@
     <title>Dashboard</title>
   </head>
   <body>
+    <div
+      th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
+    ></div>
     <div>
       <h1>Dashboard</h1>
       <p th:text="${user}"></p>
-      <h2>Tasks</h2>
+      <h2>Tarefas</h2>
       <div
         th:replace="~{fragments/tasks-fragment :: tasks-fragment(${tasks})}"
       ></div>

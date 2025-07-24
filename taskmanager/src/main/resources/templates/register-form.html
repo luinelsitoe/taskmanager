@@ -9,13 +9,9 @@
     <div align="center">
       <h1>Registrar</h1>
 
-      <div th:if="${errorMessages}" style="color: red">
-        <ul th:each="msg : ${errorMessages}">
-          <li>
-            <p th:text="${msg}"></p>
-          </li>
-        </ul>
-      </div>
+      <div
+        th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
+      ></div>
 
       <form th:action="@{/register/save}" th:object="${userForm}" method="post">
         <label for="name">Nome:</label>

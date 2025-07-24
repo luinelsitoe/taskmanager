@@ -42,6 +42,7 @@ public class TaskService {
   public String undoStatus(Long taskID, Long userID) {
     var task = getTaskById(taskID, userID);
     task.setStatus(Status.PENDENTE);
+    task.setFinishedAt(null);
     taskRepo.save(task);
 
     return "Tarefa desfeita";
@@ -50,6 +51,7 @@ public class TaskService {
   public String cancelTask(Long taskID, Long userID) {
     var task = getTaskById(taskID, userID);
     task.setStatus(Status.CANCELADA);
+    task.setFinishedAt(null);
     taskRepo.save(task);
 
     return "Tarefa cancelada";
@@ -57,31 +59,27 @@ public class TaskService {
 
   public String finishTask(Long taskID, Long userID) {
     var task = getTaskById(taskID, userID);
-    task.setFineshedAt(LocalDateTime.now());
+    task.setFinishedAt(LocalDateTime.now());
     task.setStatus(Status.FEITA);
     taskRepo.save(task);
 
     return "Tarefa finalizada";
   }
 
-  public String updateTitle(Long taskID, Long userID, String title) {
+  public String updateTask(Long taskID, Long userID, TaskForm taskForm) {
     var task = getTaskById(taskID, userID);
-    task.setTitle(title);
+    task.setTitle(taskForm.getTitle());
+    task.setDescription(taskForm.getDescription());
+    task.setCreatedAt(task.getCreatedAt());
+    task.setFinishedAt(task.getFinishedAt());
+    task.setStatus(task.getStatus());
     taskRepo.save(task);
 
-    return "Titulo actualizada";
+    return "Tarefa actualizada";
   }
 
-  public String updateDescription(Long taskID, Long userID, String description) {
-    var task = getTaskById(taskID, userID);
-    task.setDescription(description);
-    taskRepo.save(task);
-
-    return "Descricao actualizada";
-  }
-
-  public String removeTask(Long id) {
-    taskRepo.deleteById(id);
+  public String removeTask(Long userID, Long taskID) {
+    taskRepo.deleteByIdAndUserId(taskID, userID);
     return "Tarefa removida";
   }
 

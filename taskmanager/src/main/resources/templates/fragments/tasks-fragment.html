@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tasks</title>
+    <title>Tarefas</title>
   </head>
   <body>
     <div th:fragment="tasks-fragment(tasks)">
@@ -18,7 +18,7 @@
           <tr th:each="t : ${tasks}" th:object="${t}">
             <td>
               <a
-                th:href="@{/tasks/{userId}/{taskId}(userId=${t.user.id}, taskId=${t.id})}"
+                th:href="@{/tasks/{taskId}(taskId=${t.id})}"
                 th:text="*{title}"
               ></a>
             </td>

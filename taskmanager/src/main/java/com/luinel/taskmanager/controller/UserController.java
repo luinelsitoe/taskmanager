@@ -28,9 +28,7 @@ public class UserController {
   }
 
   @PostMapping("/login/save")
-  public String login(
-      Model model,
-      @ModelAttribute UserForm userForm, // sem necessidade de validar o formulario
+  public String login(@ModelAttribute UserForm userForm, // sem necessidade de validar o formulario
       HttpSession session) {
     var user = userService.login(userForm.getName(), userForm.getPassword());
     session.setAttribute("userId", user.getId());
@@ -45,9 +43,7 @@ public class UserController {
   }
 
   @PostMapping("/register/save")
-  public String saveUser(
-      Model model,
-      @Valid @ModelAttribute UserForm userForm,
+  public String saveUser(@Valid @ModelAttribute UserForm userForm,
       HttpSession session) {
     var user = userService.createUser(userForm);
     session.setAttribute("userId", user.getId());

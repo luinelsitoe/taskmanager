@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actualizar</title>
+  </head>
+  <body>
+    <div>
+      <h1>Actualizar Tarefa</h1>
+      <div
+        th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
+      ></div>
+
+      <form
+        th:action="@{/tasks/update-form/save/{taskId}(taskId=${taskId})}"
+        th:object="${taskForm}"
+        method="post"
+      >
+        <label for="title">Titulo: </label>
+        <input type="text" id="title" th:field="*{title}" />
+        <br />
+
+        <label for="description">Descricao: </label>
+        <textarea id="description" th:field="*{description}"></textarea>
+        <br />
+
+        <label for="createdAt">Data de criacao: </label>
+        <input type="datetime" id="createdAt" th:field="*{createdAt}" />
+        <br />
+
+        <label for="finishedAt">Data de termino: </label>
+        <input type="datetime" id="finished" th:field="*{finishedAt}" />
+        <br />
+
+        <label for="status">Status: </label>
+        <select id="stauts" th:field="*{status}">
+          <option
+            th:each="status : ${statusList}"
+            th:value="${status}"
+            th:text="${status}"
+          ></option>
+        </select>
+        <br />
+
+        <button type="submit">Actualizar</button>
+      </form>
+    </div>
+  </body>
+</html>
