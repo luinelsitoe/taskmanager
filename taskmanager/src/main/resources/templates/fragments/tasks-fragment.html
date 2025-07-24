@@ -15,10 +15,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="t : ${tasks}" th:object="${t}">
+          <tr th:each="task : ${tasks}" th:object="${task}">
             <td>
               <a
-                th:href="@{/tasks/{taskId}(taskId=${t.id})}"
+                th:href="@{/tasks/{taskId}(taskId=${task.id})}"
                 th:text="*{title}"
               ></a>
             </td>
