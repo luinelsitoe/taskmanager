@@ -59,5 +59,13 @@ public class Task {
     if (title == null || title.isBlank()) {
       throw new InvalidTitleException("Titulo não pode estar vazio");
     }
+    this.title = title;
+  }
+
+  public void setStatus(Status status) {
+    if (status != Status.FEITA) {
+      this.finishedAt = null;
+    }
+    this.status = status;
   }
 }
