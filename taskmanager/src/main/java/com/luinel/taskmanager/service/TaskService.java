@@ -42,7 +42,6 @@ public class TaskService {
   public String undoStatus(Long taskID, Long userID) {
     var task = getTaskById(taskID, userID);
     task.setStatus(Status.PENDENTE);
-    task.setFinishedAt(null);
     taskRepo.save(task);
 
     return "Tarefa desfeita";
@@ -51,7 +50,6 @@ public class TaskService {
   public String cancelTask(Long taskID, Long userID) {
     var task = getTaskById(taskID, userID);
     task.setStatus(Status.CANCELADA);
-    task.setFinishedAt(null);
     taskRepo.save(task);
 
     return "Tarefa cancelada";

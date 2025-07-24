@@ -6,40 +6,61 @@
     <title>Tarefa</title>
   </head>
   <body>
-    <div
+    <!-- Erros -->
+    <section
       th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
-    ></div>
+    ></section>
 
-    <div>
-      <div th:object="${task}">
-        <h4 th:text="*{title}"></h4>
+    <!-- Conteúdo principal -->
+    <main>
+      <article th:object="${task}">
+        <header>
+          <h4 th:text="*{title}"></h4>
+        </header>
+
         <p th:text="*{description}"></p>
         <p th:text="*{status}"></p>
-        <p th:text="*{createdAt}"></p>
-        <p th:text="*{finishedAt}"></p>
-      </div>
+        <p
+          th:text="${#temporals.format(task.createdAt, 'dd/MM/yyyy HH:mm')}"
+        ></p>
+        <p
+          th:text="${#temporals.format(task.finishedAt, 'dd/MM/yyyy HH:mm')}"
+        ></p>
 
-      <button>
-        <a th:href="@{/tasks/cancel/{taskId}(taskId=${task.id})}"> Cancelar </a>
-      </button>
-
-      <button>
-        <a th:href="@{/tasks/finish/{taskId}(taskId=${task.id})}">
-          Finalizar
-        </a>
-      </button>
-
-      <button>
-        <a th:href="@{/tasks/undo/{taskId}(taskId=${task.id})}">
-          Deixar Pendente
-        </a>
-      </button>
-
-      <button>
-        <a th:href="@{/tasks/update-form/{taskId}(taskId=${task.id})}"
-          >Actualizar dados</a
-        >
-      </button>
-    </div>
+        <!-- Ações -->
+        <nav class="task-actions">
+          <ul>
+            <li>
+              <a
+                th:href="@{/tasks/cancel/{taskId}(taskId=${task.id})}"
+                class="button"
+                >Cancelar</a
+              >
+            </li>
+            <li>
+              <a
+                th:href="@{/tasks/finish/{taskid}(taskid=${task.id})}"
+                class="button"
+                >Finalizar</a
+              >
+            </li>
+            <li>
+              <a
+                th:href="@{/tasks/undo/{taskId}(taskId=${task.id})}"
+                class="button"
+                >Deixar Pendente</a
+              >
+            </li>
+            <li>
+              <a
+                th:href="@{/tasks/update-form/{taskId}(taskId=${task.id})}"
+                class="button"
+                >Actualizar dados</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </article>
+    </main>
   </body>
 </html>

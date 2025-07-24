@@ -12,6 +12,45 @@
     <div>
       <h1>Dashboard</h1>
       <p th:text="${user}"></p>
+
+      <h2>Filtrar Tarefas</h2>
+
+      <!-- Busca por Status -->
+      <form th:action="@{/tasks/search}" method="get">
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+          <option
+            th:each="status : ${statusList}"
+            th:value="${status}"
+            th:text="${status}"
+          ></option>
+        </select>
+        <button type="submit">Buscar por Status</button>
+      </form>
+
+      <!-- Busca por Título -->
+      <form th:action="@{/tasks/search}" method="get">
+        <label for="title">Título:</label>
+        <input type="text" name="title" id="title" />
+        <button type="submit">Buscar por Título</button>
+      </form>
+
+      <!-- Busca por Intervalo de Datas -->
+      <form th:action="@{/tasks/search}" method="get">
+        <label for="start">Início:</label>
+        <input type="datetime-local" name="start" id="start" />
+
+        <label for="end">Fim:</label>
+        <input type="datetime-local" name="end" id="end" />
+
+        <button type="submit">Buscar por Intervalo</button>
+      </form>
+
+      <!-- Mostrar tudo -->
+      <form th:action="@{/tasks/search}" method="get">
+        <button type="submit">Mostrar Tudo</button>
+      </form>
+
       <h2>Tarefas</h2>
       <div
         th:replace="~{fragments/tasks-fragment :: tasks-fragment(${tasks})}"

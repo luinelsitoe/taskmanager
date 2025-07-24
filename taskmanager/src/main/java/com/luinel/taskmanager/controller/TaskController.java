@@ -1,7 +1,6 @@
 package com.luinel.taskmanager.controller;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +53,6 @@ public class TaskController {
       return "redirect:/login";
     }
 
-    var statusList = Arrays.asList(Status.values());
     var task = taskService.getTaskById(taskId, userId);
 
     var taskForm = new TaskForm(
@@ -65,7 +63,7 @@ public class TaskController {
         task.getStatus());
     model.addAttribute("taskId", task.getId());
     model.addAttribute("taskForm", taskForm);
-    model.addAttribute("statusList", statusList);
+    model.addAttribute("statusList", Status.values());
     return "task-update-form";
   }
 
@@ -106,7 +104,8 @@ public class TaskController {
 
     var tasks = taskService.getAllTasks(userId);
     model.addAttribute("tasks", tasks);
-    return "/fragments/tasks-fragment";
+    model.addAttribute("statusList", Status.values());
+    return "dashboard";
   }
 
   @GetMapping(value = "/search", params = "status")
@@ -120,7 +119,8 @@ public class TaskController {
 
     var tasks = taskService.getAllTasksByStatus(userId, status);
     model.addAttribute("tasks", tasks);
-    return "/fragments/tasks-fragment";
+    model.addAttribute("statusList", Status.values());
+    return "dashboard";
   }
 
   @GetMapping(value = "/search", params = { "start", "end" })
@@ -134,7 +134,8 @@ public class TaskController {
 
     var tasks = taskService.getAllTasksBetween(userId, start, end);
     model.addAttribute("tasks", tasks);
-    return "/fragments/tasks-fragment";
+    model.addAttribute("statusList", Status.values());
+    return "dashboard";
   }
 
   @GetMapping(value = "/search", params = "title")
@@ -148,7 +149,8 @@ public class TaskController {
 
     var tasks = taskService.getTaskByTitle(userId, title);
     model.addAttribute("tasks", tasks);
-    return "/fragments/tasks-fragment";
+    model.addAttribute("statusList", Status.values());
+    return "dashboard";
   }
 
   @GetMapping("/undo/{taskId}")
