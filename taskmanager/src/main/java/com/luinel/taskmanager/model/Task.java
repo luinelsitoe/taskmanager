@@ -2,6 +2,8 @@ package com.luinel.taskmanager.model;
 
 import java.time.LocalDateTime;
 
+import com.luinel.taskmanager.error.InvalidTitleException;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,7 +46,7 @@ public class Task {
 
   public Task(String title, String description) {
     if (title == null || title.isBlank()) {
-      throw new IllegalArgumentException("Titulo não pode estar vazio");
+      throw new InvalidTitleException("Titulo não pode estar vazio");
     }
 
     this.title = title;
@@ -55,7 +57,7 @@ public class Task {
 
   public void setTitle(String title) {
     if (title == null || title.isBlank()) {
-      throw new IllegalArgumentException("Titulo não pode estar vazio");
+      throw new InvalidTitleException("Titulo não pode estar vazio");
     }
   }
 }
