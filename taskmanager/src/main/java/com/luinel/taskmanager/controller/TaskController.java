@@ -26,19 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class TaskController {
   private final TaskService taskService;
 
-  @GetMapping
-  public String getAllTasks(Model model, HttpSession session) {
-    var userId = (Long) session.getAttribute("userId");
-
-    if (userId == null) {
-      return "redirect:/login";
-    }
-
-    var tasks = taskService.getAllTasks(userId);
-    model.addAttribute("tasks", tasks);
-    return "fragments/tasks/";
-  }
-
   @GetMapping("/form")
   public String taskForm(Model model) {
     var taskForm = new TaskForm();
@@ -109,8 +96,21 @@ public class TaskController {
     return "task-card";
   }
 
-  @GetMapping("/status/")
-  public String getAllTasksByStatus(@RequestParam Status status,
+  @GetMapping("/search")
+  public String getAllTasks(Model model, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var tasks = taskService.getAllTasks(userId);
+    model.addAttribute("tasks", tasks);
+    return "/fragments/tasks-fragment";
+  }
+
+  @GetMapping(value = "/search", params = "status")
+  public String getAllTasksByStatus(@RequestParam("status") Status status,
       Model model, HttpSession session) {
     var userId = (Long) session.getAttribute("userId");
 
@@ -120,12 +120,12 @@ public class TaskController {
 
     var tasks = taskService.getAllTasksByStatus(userId, status);
     model.addAttribute("tasks", tasks);
-    return "fragments/tasks/";
+    return "/fragments/tasks-fragment";
   }
 
-  @GetMapping("/date")
-  public String getAllTasksBetween(@RequestParam LocalDateTime start,
-      @RequestParam LocalDateTime end, Model model, HttpSession session) {
+  @GetMapping(value = "/search", params = { "start", "end" })
+  public String getAllTasksBetween(@RequestParam("start") LocalDateTime start,
+      @RequestParam("end") LocalDateTime end, Model model, HttpSession session) {
     var userId = (Long) session.getAttribute("userId");
 
     if (userId == null) {
@@ -134,11 +134,11 @@ public class TaskController {
 
     var tasks = taskService.getAllTasksBetween(userId, start, end);
     model.addAttribute("tasks", tasks);
-    return "fragments/tasks/";
+    return "/fragments/tasks-fragment";
   }
 
-  @GetMapping("/title")
-  public String getTaskByTitle(@RequestParam String title,
+  @GetMapping(value = "/search", params = "title")
+  public String getTaskByTitle(@RequestParam("title") String title,
       Model model, HttpSession session) {
     var userId = (Long) session.getAttribute("userId");
 
@@ -148,7 +148,7 @@ public class TaskController {
 
     var tasks = taskService.getTaskByTitle(userId, title);
     model.addAttribute("tasks", tasks);
-    return "fragments/tasks/";
+    return "/fragments/tasks-fragment";
   }
 
   @GetMapping("/undo/{taskId}")
