@@ -18,6 +18,23 @@
         <p th:text="*{createdAt}"></p>
         <p th:text="*{finishedAt}"></p>
       </div>
+
+      <button>
+        <a th:href="@{/tasks/cancel/{taskId}(taskId=${task.id})}"> Cancelar </a>
+      </button>
+
+      <button>
+        <a th:href="@{/tasks/finish/{taskId}(taskId=${task.id})}">
+          Finalizar
+        </a>
+      </button>
+
+      <button>
+        <a th:href="@{/tasks/undo/{taskId}(taskId=${task.id})}">
+          Deixar Pendente
+        </a>
+      </button>
+
       <button>
         <a th:href="@{/tasks/update-form/{taskId}(taskId=${task.id})}"
           >Actualizar dados</a

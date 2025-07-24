@@ -162,7 +162,7 @@ public class TaskController {
 
     var msg = taskService.undoStatus(taskId, userId);
     model.addAttribute("message", msg);
-    return "redirect:/dashboard";
+    return "redirect:/tasks/" + taskId;
   }
 
   @GetMapping("/cancel/{taskId}")
@@ -176,7 +176,7 @@ public class TaskController {
 
     var msg = taskService.cancelTask(taskId, userId);
     model.addAttribute("message", msg);
-    return "redirect:/dashboard";
+    return "redirect:/tasks/" + taskId;
   }
 
   @GetMapping("/finish/{taskId}")
@@ -190,7 +190,7 @@ public class TaskController {
 
     var msg = taskService.finishTask(taskId, userId);
     model.addAttribute("message", msg);
-    return "redirect:/dashboard";
+    return "redirect:/tasks/" + taskId;
   }
 
   @GetMapping("/delete/{taskId}")
