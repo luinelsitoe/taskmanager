@@ -2,30 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tarefas</title>
   </head>
   <body>
-    <div th:fragment="tasks-fragment(tasks)">
-      <table>
+    <section th:fragment="tasks-fragment(tasks)">
+      <table aria-label="Lista de tarefas" role="table" class="tasks-table">
         <thead>
           <tr>
-            <th>Titulo</th>
-            <th>Status</th>
+            <th scope="col">Título</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="task : ${tasks}" th:object="${task}">
+          <tr th:each="task : ${tasks}">
             <td>
               <a
                 th:href="@{/tasks/{taskId}(taskId=${task.id})}"
-                th:text="*{title}"
+                th:text="${task.title}"
               ></a>
             </td>
-            <td th:text="*{status}"></td>
+            <td th:text="${task.status}"></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(tasks)}">
+            <td colspan="2" class="empty-message">
+              Nenhuma tarefa encontrada.
+            </td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </section>
   </body>
 </html>

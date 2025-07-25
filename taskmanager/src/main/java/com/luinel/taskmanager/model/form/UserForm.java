@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserForm {
   @NotBlank(message = "Nome não pode estar vazio")
+  @Length(min = 3, message = "Nome deve conter no minimo 3 caracteres")
   private String name;
 
   @NotBlank(message = "Palavra-passe não pode estar vazia")

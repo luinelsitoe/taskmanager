@@ -2,59 +2,86 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/tasks-fragment.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/error-fragment.css}" />
   </head>
   <body>
-    <div
+    <!-- Mensagem de sucesso ou informação -->
+    <section th:if="${message}">
+      <p class="message" th:text="${message}"></p>
+    </section>
+
+    <!-- Fragmento de erro -->
+    <section
       th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
-    ></div>
-    <div>
-      <h1>Dashboard</h1>
-      <p th:text="${user}"></p>
+    ></section>
 
-      <h2>Filtrar Tarefas</h2>
+    <main>
+      <header>
+        <h1>Dashboard (<span th:text="${user.name}"></span>)</h1>
+        <a th:href="@{/tasks/form}">Criar Tarefa</a>
+      </header>
 
-      <!-- Busca por Status -->
-      <form th:action="@{/tasks/search}" method="get">
-        <label for="status">Status:</label>
-        <select name="status" id="status">
-          <option
-            th:each="status : ${statusList}"
-            th:value="${status}"
-            th:text="${status}"
-          ></option>
-        </select>
-        <button type="submit">Buscar por Status</button>
-      </form>
+      <section aria-labelledby="filter-heading">
+        <h2 id="filter-heading">Filtrar Tarefas</h2>
 
-      <!-- Busca por Título -->
-      <form th:action="@{/tasks/search}" method="get">
-        <label for="title">Título:</label>
-        <input type="text" name="title" id="title" />
-        <button type="submit">Buscar por Título</button>
-      </form>
+        <!-- Busca por Status -->
+        <form th:action="@{/tasks/search}" method="get">
+          <fieldset>
+            <legend>Status</legend>
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+              <option
+                th:each="status : ${statusList}"
+                th:value="${status}"
+                th:text="${status}"
+              ></option>
+            </select>
+            <button type="submit">Buscar por Status</button>
+          </fieldset>
+        </form>
 
-      <!-- Busca por Intervalo de Datas -->
-      <form th:action="@{/tasks/search}" method="get">
-        <label for="start">Início:</label>
-        <input type="datetime-local" name="start" id="start" />
+        <!-- Busca por Título -->
+        <form th:action="@{/tasks/search}" method="get">
+          <fieldset>
+            <legend>Título</legend>
+            <label for="title">Título:</label>
+            <input type="text" name="title" id="title" />
+            <button type="submit">Buscar por Título</button>
+          </fieldset>
+        </form>
 
-        <label for="end">Fim:</label>
-        <input type="datetime-local" name="end" id="end" />
+        <!-- Busca por Intervalo de Datas -->
+        <form th:action="@{/tasks/search}" method="get">
+          <fieldset>
+            <legend>Intervalo de Datas</legend>
 
-        <button type="submit">Buscar por Intervalo</button>
-      </form>
+            <label for="start">Início:</label>
+            <input type="datetime-local" name="start" id="start" />
 
-      <!-- Mostrar tudo -->
-      <form th:action="@{/tasks/search}" method="get">
-        <button type="submit">Mostrar Tudo</button>
-      </form>
+            <label for="end">Fim:</label>
+            <input type="datetime-local" name="end" id="end" />
 
-      <h2>Tarefas</h2>
-      <div
-        th:replace="~{fragments/tasks-fragment :: tasks-fragment(${tasks})}"
-      ></div>
-    </div>
+            <button type="submit">Buscar por Intervalo</button>
+          </fieldset>
+        </form>
+
+        <!-- Mostrar tudo -->
+        <form th:action="@{/tasks/search}" method="get">
+          <button type="submit">Mostrar Tudo</button>
+        </form>
+      </section>
+
+      <!-- Lista de tarefas -->
+      <section aria-labelledby="task-heading">
+        <h2 id="task-heading">Tarefas</h2>
+        <div
+          th:replace="~{fragments/tasks-fragment :: tasks-fragment(${tasks})}"
+        ></div>
+      </section>
+    </main>
   </body>
 </html>

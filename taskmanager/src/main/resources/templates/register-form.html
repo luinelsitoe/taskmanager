@@ -4,27 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrar</title>
+    <link rel="stylesheet" th:href="@{/css/login-form.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/error-fragment.css}" />
   </head>
   <body>
-    <div align="center">
-      <h1>Registrar</h1>
+    <main>
+      <section>
+        <header>
+          <h1>Registrar</h1>
+        </header>
 
-      <div
-        th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
-      ></div>
+        <section
+          th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
+        ></section>
 
-      <form th:action="@{/register/save}" th:object="${userForm}" method="post">
-        <label for="name">Nome:</label>
-        <input id="name" type="text" th:field="*{name}" />
-        <br />
+        <form
+          th:action="@{/register/save}"
+          th:object="${userForm}"
+          method="post"
+        >
+          <div>
+            <label for="name">Nome:</label>
+            <input id="name" type="text" th:field="*{name}" />
+          </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" th:field="*{password}" />
-        <br />
+          <div>
+            <label for="password">Password:</label>
+            <input id="password" type="password" th:field="*{password}" />
+          </div>
 
-        <button type="submit">Registrar</button>
-      </form>
-      Já tem uma conta? <a th:href="@{/login}">Login</a>
-    </div>
+          <div>
+            <button type="submit">Registrar</button>
+          </div>
+        </form>
+
+        <p>
+          Já tem uma conta?
+          <a th:href="@{/login}">Login</a>
+        </p>
+      </section>
+    </main>
   </body>
 </html>

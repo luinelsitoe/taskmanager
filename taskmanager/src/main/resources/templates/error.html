@@ -3,9 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Internal Server Error</title>
+    <title>Erro Interno do Servidor</title>
+    <link rel="stylesheet" th:href="@{/css/error.css}" />
   </head>
   <body>
-    <h1>Internal Server Error</h1>
+    <main>
+      <section>
+        <h1>Erro Interno do Servidor</h1>
+        <p>Ocorreu um erro inesperado. Tente novamente mais tarde.</p>
+        <nav>
+          <a href="/dashboard" th:href="@{/dashboard}"
+            >Voltar para a página inicial</a
+          >
+        </nav>
+      </section>
+    </main>
   </body>
 </html>

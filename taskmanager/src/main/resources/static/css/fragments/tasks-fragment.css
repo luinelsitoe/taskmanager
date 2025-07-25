@@ -1,0 +1,41 @@
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tasks-table th,
+.tasks-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0; /* cinza claro */
+}
+.tasks-table th {
+  background-color: #2c7a7b;
+  color: white;
+  font-weight: 600;
+}
+.tasks-table tbody tr:hover {
+  background-color: #e6fffa; /* leve verde água ao passar o mouse */
+}
+.tasks-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.tasks-table a {
+  color: #2c7a7b;
+  text-decoration: none;
+  font-weight: 600;
+}
+.tasks-table a:hover {
+  text-decoration: underline;
+  color: #285e61;
+}
+/* Mensagem quando lista vazia */
+.empty-message {
+  text-align: center;
+  font-style: italic;
+  color: #718096;
+  padding: 1rem;
+}

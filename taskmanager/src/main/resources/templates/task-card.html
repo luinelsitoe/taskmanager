@@ -3,10 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tarefa</title>
+    <title>Detalhes da Tarefa</title>
+    <link rel="stylesheet" th:href="@{/css/task-card.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/error-fragment.css}" />
   </head>
   <body>
-    <!-- Erros -->
+    <!-- Mensagem de sucesso ou informação -->
+    <section th:if="${message}">
+      <p class="message" th:text="${message}"></p>
+    </section>
+
+    <!-- Mensagem de erro -->
     <section
       th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
     ></section>
@@ -15,48 +22,70 @@
     <main>
       <article th:object="${task}">
         <header>
-          <h4 th:text="*{title}"></h4>
+          <h1 th:text="*{title}">Título da Tarefa</h1>
         </header>
 
-        <p th:text="*{description}"></p>
-        <p th:text="*{status}"></p>
-        <p
-          th:text="${#temporals.format(task.createdAt, 'dd/MM/yyyy HH:mm')}"
-        ></p>
-        <p
-          th:text="${#temporals.format(task.finishedAt, 'dd/MM/yyyy HH:mm')}"
-        ></p>
+        <section>
+          <p>
+            <strong>Descrição:</strong> <span th:text="*{description}"></span>
+          </p>
+          <p><strong>Status:</strong> <span th:text="*{status}"></span></p>
+          <p>
+            <strong>Criado em:</strong>
+            <time
+              th:text="${#temporals.format(task.createdAt, 'dd/MM/yyyy HH:mm')}"
+            ></time>
+          </p>
+          <p>
+            <strong>Finalizado em:</strong>
+            <time
+              th:text="${#temporals.format(task.finishedAt, 'dd/MM/yyyy HH:mm')}"
+            ></time>
+          </p>
+        </section>
 
         <!-- Ações -->
-        <nav class="task-actions">
-          <ul>
+        <nav aria-label="Ações da Tarefa">
+          <ul class="task-actions">
             <li>
               <a
                 th:href="@{/tasks/cancel/{taskId}(taskId=${task.id})}"
                 class="button"
-                >Cancelar</a
               >
+                Cancelar
+              </a>
             </li>
             <li>
               <a
                 th:href="@{/tasks/finish/{taskid}(taskid=${task.id})}"
                 class="button"
-                >Finalizar</a
               >
+                Finalizar
+              </a>
             </li>
             <li>
               <a
                 th:href="@{/tasks/undo/{taskId}(taskId=${task.id})}"
                 class="button"
-                >Deixar Pendente</a
               >
+                Deixar Pendente
+              </a>
+            </li>
+            <li>
+              <a
+                th:href="@{/tasks/delete/{taskId}(taskId=${task.id})}"
+                class="button"
+              >
+                Remover
+              </a>
             </li>
             <li>
               <a
                 th:href="@{/tasks/update-form/{taskId}(taskId=${task.id})}"
                 class="button"
-                >Actualizar dados</a
               >
+                Atualizar Dados
+              </a>
             </li>
           </ul>
         </nav>

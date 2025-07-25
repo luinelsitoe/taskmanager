@@ -36,7 +36,7 @@ public class TaskService {
     user.getTasks().add(task);
     taskRepo.save(task);
 
-    return "Tarefa salva";
+    return "Tarefa criada";
   }
 
   public String undoStatus(Long taskID, Long userID) {
@@ -44,7 +44,7 @@ public class TaskService {
     task.setStatus(Status.PENDENTE);
     taskRepo.save(task);
 
-    return "Tarefa desfeita";
+    return "Tarefa pendente";
   }
 
   public String cancelTask(Long taskID, Long userID) {
@@ -68,9 +68,9 @@ public class TaskService {
     var task = getTaskById(taskID, userID);
     task.setTitle(taskForm.getTitle());
     task.setDescription(taskForm.getDescription());
-    task.setCreatedAt(task.getCreatedAt());
-    task.setFinishedAt(task.getFinishedAt());
-    task.setStatus(task.getStatus());
+    task.setCreatedAt(taskForm.getCreatedAt());
+    task.setFinishedAt(taskForm.getFinishedAt());
+    task.setStatus(taskForm.getStatus());
     taskRepo.save(task);
 
     return "Tarefa actualizada";

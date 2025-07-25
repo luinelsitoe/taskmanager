@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TaskForm {
   @NotBlank(message = "Titulo não pode estar vazio")
-  @Length(min = 3, message = "Titulo deve ter no minimo 3 caracteres")
+  @Length(min = 3, message = "Titulo deve conter no minimo 3 caracteres")
   private String title;
 
   private String description;

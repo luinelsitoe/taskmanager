@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.luinel.taskmanager.model.Status;
 import com.luinel.taskmanager.model.form.TaskForm;
@@ -33,14 +34,16 @@ public class TaskController {
   }
 
   @PostMapping("/form/save")
-  public String createTask(@Valid @ModelAttribute TaskForm taskForm, HttpSession session) {
+  public String createTask(@Valid @ModelAttribute TaskForm taskForm,
+      HttpSession session, RedirectAttributes redirectAttributes) {
     var userId = (Long) session.getAttribute("userId");
 
     if (userId == null) {
       return "redirect:/login";
     }
 
-    taskService.createTask(userId, taskForm);
+    var msg = taskService.createTask(userId, taskForm);
+    redirectAttributes.addFlashAttribute("message", msg);
     return "redirect:/dashboard";
   }
 
@@ -69,7 +72,9 @@ public class TaskController {
 
   @PostMapping("/update-form/save/{taskId}")
   public String updateTask(@PathVariable("taskId") Long taskId,
-      @ModelAttribute TaskForm taskForm, Model model, HttpSession session) {
+      @ModelAttribute TaskForm taskForm,
+      RedirectAttributes redirectAttributes,
+      HttpSession session) {
     var userId = (Long) session.getAttribute("userId");
 
     if (userId == null) {
@@ -77,8 +82,50 @@ public class TaskController {
     }
 
     var msg = taskService.updateTask(taskId, userId, taskForm);
-    model.addAttribute("message", msg);
-    return "redirect:/dashboard";
+    redirectAttributes.addFlashAttribute("message", msg);
+    return "redirect:/tasks/" + taskId;
+  }
+
+  @GetMapping("/undo/{taskId}")
+  public String undoStatus(@PathVariable("taskId") Long taskId,
+      RedirectAttributes redirectAttributes, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var msg = taskService.undoStatus(taskId, userId);
+    redirectAttributes.addFlashAttribute("message", msg);
+    return "redirect:/tasks/" + taskId;
+  }
+
+  @GetMapping("/cancel/{taskId}")
+  public String cancelStatus(@PathVariable("taskId") Long taskId,
+      RedirectAttributes redirectAttributes, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var msg = taskService.cancelTask(taskId, userId);
+    redirectAttributes.addFlashAttribute("message", msg);
+    return "redirect:/tasks/" + taskId;
+  }
+
+  @GetMapping("/finish/{taskId}")
+  public String finishTask(@PathVariable("taskId") Long taskId,
+      RedirectAttributes redirectAttributes, HttpSession session) {
+    var userId = (Long) session.getAttribute("userId");
+
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    var msg = taskService.finishTask(taskId, userId);
+    redirectAttributes.addFlashAttribute("message", msg);
+    return "redirect:/tasks/" + taskId;
   }
 
   @GetMapping("/{taskId}")
@@ -153,58 +200,17 @@ public class TaskController {
     return "dashboard";
   }
 
-  @GetMapping("/undo/{taskId}")
-  public String undoStatus(@PathVariable("taskId") Long taskId,
-      Model model, HttpSession session) {
-    var userId = (Long) session.getAttribute("userId");
-
-    if (userId == null) {
-      return "redirect:/login";
-    }
-
-    var msg = taskService.undoStatus(taskId, userId);
-    model.addAttribute("message", msg);
-    return "redirect:/tasks/" + taskId;
-  }
-
-  @GetMapping("/cancel/{taskId}")
-  public String cancelStatus(@PathVariable("taskId") Long taskId,
-      Model model, HttpSession session) {
-    var userId = (Long) session.getAttribute("userId");
-
-    if (userId == null) {
-      return "redirect:/login";
-    }
-
-    var msg = taskService.cancelTask(taskId, userId);
-    model.addAttribute("message", msg);
-    return "redirect:/tasks/" + taskId;
-  }
-
-  @GetMapping("/finish/{taskId}")
-  public String finishTask(@PathVariable("taskId") Long taskId,
-      Model model, HttpSession session) {
-    var userId = (Long) session.getAttribute("userId");
-
-    if (userId == null) {
-      return "redirect:/login";
-    }
-
-    var msg = taskService.finishTask(taskId, userId);
-    model.addAttribute("message", msg);
-    return "redirect:/tasks/" + taskId;
-  }
-
   @GetMapping("/delete/{taskId}")
-  public String removeTask(@PathVariable("taskId") Long taskId, HttpSession session, Model model) {
+  public String removeTask(@PathVariable("taskId") Long taskId, HttpSession session,
+      RedirectAttributes redirectAttributes) {
     var userId = (Long) session.getAttribute("userId");
 
     if (userId == null) {
       return "redirect:/login";
     }
 
-    var msg = taskService.removeTask(taskId, userId);
-    model.addAttribute("message", msg);
+    var msg = taskService.removeTask(userId, taskId);
+    redirectAttributes.addFlashAttribute("message", msg);
     return "redirect:/dashboard";
   }
 }

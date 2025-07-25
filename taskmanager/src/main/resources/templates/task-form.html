@@ -3,30 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Criar tarefa</title>
+    <title>Criar Tarefa</title>
+    <link rel="stylesheet" th:href="@{/css/task-form.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/error-fragment.css}" />
   </head>
   <body>
-    <div>
-      <h1>Criar tarefa</h1>
-      <div
-        th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
-      ></div>
+    <main>
+      <section>
+        <header>
+          <h1>Criar Tarefa</h1>
+        </header>
 
-      <form
-        th:action="@{/tasks/form/save}"
-        th:object="${taskForm}"
-        method="post"
-      >
-        <label for="title">Titulo: </label>
-        <input type="text" id="title" th:field="*{title}" />
-        <br />
+        <!-- Fragmento de erro -->
+        <section
+          th:replace="~{fragments/error-fragment:: error-fragment(${errorMessages})}"
+        ></section>
 
-        <label for="description">Descricao: </label>
-        <textarea id="description" th:field="*{description}"></textarea>
-        <br />
+        <!-- Formulário -->
+        <form
+          th:action="@{/tasks/form/save}"
+          th:object="${taskForm}"
+          method="post"
+        >
+          <div>
+            <label for="title">Título:</label>
+            <input type="text" id="title" th:field="*{title}" />
+          </div>
 
-        <button type="submit">Criar</button>
-      </form>
-    </div>
+          <div>
+            <label for="description">Descrição:</label>
+            <textarea id="description" th:field="*{description}"></textarea>
+          </div>
+
+          <div>
+            <button type="submit">Criar</button>
+          </div>
+        </form>
+      </section>
+    </main>
   </body>
 </html>
