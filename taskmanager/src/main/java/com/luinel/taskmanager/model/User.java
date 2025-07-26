@@ -2,7 +2,7 @@ package com.luinel.taskmanager.model;
 
 import java.util.List;
 
-import com.luinel.taskmanager.error.InvalidNameExcetption;
+import com.luinel.taskmanager.error.InvalidNameException;
 import com.luinel.taskmanager.error.InvalidPasswordException;
 
 import jakarta.persistence.CascadeType;
@@ -42,7 +42,7 @@ public class User {
     }
 
     if (name == null || name.isBlank()) {
-      throw new InvalidNameExcetption("Nome não pode estar vazio");
+      throw new InvalidNameException("Nome não pode estar vazio");
     }
     this.name = name;
     this.password = password;
@@ -50,7 +50,7 @@ public class User {
 
   public void setName(String name) {
     if (name == null || name.isBlank()) {
-      throw new InvalidNameExcetption("Nome não pode estar vazio");
+      throw new InvalidNameException("Nome não pode estar vazio");
     }
     this.name = name;
   }
