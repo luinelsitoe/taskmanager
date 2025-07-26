@@ -6,8 +6,11 @@
     <title>Atualizar Tarefa</title>
     <link rel="stylesheet" th:href="@{/css/task-form.css}" />
     <link rel="stylesheet" th:href="@{/css/fragments/error-fragment.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/header-fragment.css}" />
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}" />
   </head>
   <body>
+    <header th:replace="~{fragments/header-fragment :: main-header}"></header>
     <main>
       <section>
         <header>
@@ -37,12 +40,20 @@
 
           <div>
             <label for="createdAt">Data de Criação:</label>
-            <input type="datetime" id="createdAt" th:field="*{createdAt}" />
+            <input
+              type="datetime-local"
+              id="createdAt"
+              th:field="*{createdAt}"
+            />
           </div>
 
           <div>
             <label for="finishedAt">Data de Término:</label>
-            <input type="datetime" id="finishedAt" th:field="*{finishedAt}" />
+            <input
+              type="datetime-local"
+              id="finishedAt"
+              th:field="*{finishedAt}"
+            />
           </div>
 
           <div>

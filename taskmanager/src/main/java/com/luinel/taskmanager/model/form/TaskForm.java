@@ -3,6 +3,7 @@ package com.luinel.taskmanager.model.form;
 import java.time.LocalDateTime;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.luinel.taskmanager.model.Status;
 
@@ -21,8 +22,10 @@ public class TaskForm {
 
   private String description;
 
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   private LocalDateTime createdAt;
 
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   private LocalDateTime finishedAt;
 
   private Status status;

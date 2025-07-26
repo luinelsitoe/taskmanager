@@ -3,6 +3,7 @@ package com.luinel.taskmanager.service;
 import org.springframework.stereotype.Service;
 
 import com.luinel.taskmanager.error.DuplicateUserException;
+import com.luinel.taskmanager.error.InvalidPasswordException;
 import com.luinel.taskmanager.model.User;
 import com.luinel.taskmanager.model.form.UserForm;
 import com.luinel.taskmanager.repository.UserRepository;
@@ -55,7 +56,7 @@ public class UserService {
         .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
 
     if (!user.getPassword().equals(password)) {
-      throw new IllegalArgumentException("Palavra-passe incorreta");
+      throw new InvalidPasswordException("Palavra-passe incorreta");
     }
 
     return user;

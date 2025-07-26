@@ -87,18 +87,18 @@ public class TaskService {
   }
 
   public List<Task> getAllTasks(Long userID) {
-    return taskRepo.findByUserId(userID);
+    return taskRepo.findByUserIdOrderByIdDesc(userID);
   }
 
   public List<Task> getAllTasksByStatus(Long userId, Status status) {
-    return taskRepo.findByUserIdAndStatus(userId, status);
+    return taskRepo.findByUserIdAndStatusOrderByIdDesc(userId, status);
   }
 
   public List<Task> getAllTasksBetween(Long userId, LocalDateTime start, LocalDateTime end) {
-    return taskRepo.findByUserIdAndCreatedAtBetween(userId, start, end);
+    return taskRepo.findByUserIdAndCreatedAtBetweenOrderByIdDesc(userId, start, end);
   }
 
   public List<Task> getTaskByTitle(Long userId, String title) {
-    return taskRepo.findByUserIdAndTitleContaining(userId, title);
+    return taskRepo.findByUserIdAndTitleContainingOrderByIdDesc(userId, title);
   }
 }

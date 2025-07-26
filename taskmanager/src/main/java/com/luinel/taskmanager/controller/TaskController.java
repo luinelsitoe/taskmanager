@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.luinel.taskmanager.model.Status;
 import com.luinel.taskmanager.model.form.TaskForm;
 import com.luinel.taskmanager.service.TaskService;
+import com.luinel.taskmanager.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -25,10 +26,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TaskController {
   private final TaskService taskService;
+  private final UserService userService;
 
   @GetMapping("/form")
-  public String taskForm(Model model) {
+  public String taskForm(Model model, HttpSession session) {
     var taskForm = new TaskForm();
+    var userId = (Long) session.getAttribute("userId");
+    var user = userService.findById(userId);
+    model.addAttribute("user", user);
     model.addAttribute("taskForm", taskForm);
     return "task-form";
   }
@@ -57,13 +62,15 @@ public class TaskController {
     }
 
     var task = taskService.getTaskById(taskId, userId);
-
     var taskForm = new TaskForm(
         task.getTitle(),
         task.getDescription(),
         task.getCreatedAt(),
         task.getFinishedAt(),
         task.getStatus());
+    var user = userService.findById(userId);
+
+    model.addAttribute("user", user);
     model.addAttribute("taskId", task.getId());
     model.addAttribute("taskForm", taskForm);
     model.addAttribute("statusList", Status.values());
@@ -137,6 +144,8 @@ public class TaskController {
     }
 
     var task = taskService.getTaskById(taskId, userId);
+    var user = userService.findById(userId);
+    model.addAttribute("user", user);
     model.addAttribute("task", task);
     return "task-card";
   }
@@ -150,6 +159,8 @@ public class TaskController {
     }
 
     var tasks = taskService.getAllTasks(userId);
+    var user = userService.findById(userId);
+    model.addAttribute("user", user);
     model.addAttribute("tasks", tasks);
     model.addAttribute("statusList", Status.values());
     return "dashboard";
@@ -165,6 +176,8 @@ public class TaskController {
     }
 
     var tasks = taskService.getAllTasksByStatus(userId, status);
+    var user = userService.findById(userId);
+    model.addAttribute("user", user);
     model.addAttribute("tasks", tasks);
     model.addAttribute("statusList", Status.values());
     return "dashboard";
@@ -180,6 +193,8 @@ public class TaskController {
     }
 
     var tasks = taskService.getAllTasksBetween(userId, start, end);
+    var user = userService.findById(userId);
+    model.addAttribute("user", user);
     model.addAttribute("tasks", tasks);
     model.addAttribute("statusList", Status.values());
     return "dashboard";
@@ -195,6 +210,8 @@ public class TaskController {
     }
 
     var tasks = taskService.getTaskByTitle(userId, title);
+    var user = userService.findById(userId);
+    model.addAttribute("user", user);
     model.addAttribute("tasks", tasks);
     model.addAttribute("statusList", Status.values());
     return "dashboard";

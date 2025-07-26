@@ -6,8 +6,11 @@
     <title>Criar Tarefa</title>
     <link rel="stylesheet" th:href="@{/css/task-form.css}" />
     <link rel="stylesheet" th:href="@{/css/fragments/error-fragment.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/header-fragment.css}" />
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}" />
   </head>
   <body>
+    <header th:replace="~{fragments/header-fragment :: main-header}"></header>
     <main>
       <section>
         <header>

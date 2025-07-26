@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div th:fragment="main-header">
+      <div class="main-header">
+        <a th:href="@{/dashboard}" class="logo">
+          <img
+            th:src="@{/img/task-logo.svg}"
+            alt="TaskManager Logo"
+            style="height: 24px; vertical-align: middle; margin-right: 8px"
+          />
+          TaskManager <span th:text="'(' + ${user.name} + ')'"></span>
+        </a>
+
+        <nav>
+          <a th:href="@{/tasks/form}">Nova Tarefa</a>
+          <a th:href="@{/logout}">Sair</a>
+        </nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -51,6 +51,12 @@ public class UserController {
     return "redirect:/dashboard";
   }
 
+  @GetMapping("/logout")
+  public String logout(HttpSession session) {
+    session.removeAttribute("userId");
+    return "redirect:/login";
+  }
+
   @GetMapping("/dashboard")
   public String dashboard(Model model, HttpSession session) {
     var userId = (Long) session.getAttribute("userId");

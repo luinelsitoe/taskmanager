@@ -7,8 +7,12 @@
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/fragments/tasks-fragment.css}" />
     <link rel="stylesheet" th:href="@{/css/fragments/error-fragment.css}" />
+    <link rel="stylesheet" th:href="@{/css/fragments/header-fragment.css}" />
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}" />
+    <script th:src="@{/js/dashboard.js}"></script>
   </head>
   <body>
+    <header th:replace="~{fragments/header-fragment :: main-header}"></header>
     <!-- Mensagem de sucesso ou informação -->
     <section th:if="${message}">
       <p class="message" th:text="${message}"></p>
@@ -20,16 +24,30 @@
     ></section>
 
     <main>
-      <header>
-        <h1>Dashboard (<span th:text="${user.name}"></span>)</h1>
-        <a th:href="@{/tasks/form}">Criar Tarefa</a>
-      </header>
-
       <section aria-labelledby="filter-heading">
         <h2 id="filter-heading">Filtrar Tarefas</h2>
 
-        <!-- Busca por Status -->
-        <form th:action="@{/tasks/search}" method="get">
+        <!-- Select para escolher o tipo de filtro -->
+        <label for="filter-type" style="font-weight: 600; color: #2d3748"
+          >Escolha o filtro:</label
+        >
+        <select
+          id="filter-type"
+          style="width: 100%; padding: 0.4rem; margin-bottom: 1rem"
+        >
+          <option value="">-- Selecione --</option>
+          <option value="status">Status</option>
+          <option value="title">Título</option>
+          <option value="interval">Intervalo de Datas</option>
+        </select>
+
+        <!-- Filtro por status -->
+        <form
+          id="status-form"
+          th:action="@{/tasks/search}"
+          method="get"
+          style="display: none"
+        >
           <fieldset>
             <legend>Status</legend>
             <label for="status">Status:</label>
@@ -44,8 +62,13 @@
           </fieldset>
         </form>
 
-        <!-- Busca por Título -->
-        <form th:action="@{/tasks/search}" method="get">
+        <!-- Filtro por título -->
+        <form
+          id="title-form"
+          th:action="@{/tasks/search}"
+          method="get"
+          style="display: none"
+        >
           <fieldset>
             <legend>Título</legend>
             <label for="title">Título:</label>
@@ -54,11 +77,15 @@
           </fieldset>
         </form>
 
-        <!-- Busca por Intervalo de Datas -->
-        <form th:action="@{/tasks/search}" method="get">
+        <!-- Filtro por intervalo de datas -->
+        <form
+          id="interval-form"
+          th:action="@{/tasks/search}"
+          method="get"
+          style="display: none"
+        >
           <fieldset>
             <legend>Intervalo de Datas</legend>
-
             <label for="start">Início:</label>
             <input type="datetime-local" name="start" id="start" />
 
